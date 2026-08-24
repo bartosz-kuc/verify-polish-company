@@ -1,0 +1,26 @@
+{
+  "name": "verify-polish-company",
+  "displayName": "Verify Polish Company",
+  "version": "1.0.0",
+  "description": "Verify Polish companies by NIP/KRS/REGON, check VAT status and bank accounts on the Ministry of Finance White List, and validate EU VAT via VIES — free, keyless REST + MCP.",
+  "author": {
+    "name": "Bartosz Kuć",
+    "email": "firma@bartosza.pl",
+    "url": "https://skanfirmy.pl"
+  },
+  "homepage": "https://skanfirmy.pl",
+  "repository": "https://github.com/bartosz-kuc/skanfirmy-mcp",
+  "license": "MIT",
+  "keywords": [
+    "poland",
+    "nip",
+    "krs",
+    "regon",
+    "vat",
+    "vies",
+    "company-verification",
+    "due-diligence",
+    "mcp"
+  ],
+  "mcpServers": "./.mcp.json"
+}
