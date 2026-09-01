@@ -1,0 +1,35 @@
+name: Link check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  linkChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Link Checker
+        id: lychee
+        # Checks the URLs in the plugin's README and SKILL.md. The accept list is
+        # wide on purpose: these docs link live API endpoints, and a healthy API
+        # commonly answers a bare GET with 403 (bot guard), 202 (async), 405
+        # (method not allowed, e.g. the hosted /mcp endpoint) or 429 while being
+        # perfectly alive. Only genuine 404 / 5xx / dead DNS should flag.
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: "--no-progress --max-retries 3 --timeout 30 --accept 200,202,206,301,302,307,403,405,429 README.md skills/verify-polish-company/SKILL.md"
+          fail: false
+      - name: Create issue on broken links
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v6
+        with:
+          title: "Link checker — broken links found"
+          content-filepath: ./lychee/out.md
+          labels: automated, links
